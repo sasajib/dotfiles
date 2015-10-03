@@ -18,7 +18,7 @@ font pango: Ubuntu Mono 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+# font pango:DejaVu Sans Mono 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -97,7 +97,7 @@ bindsym $mod+a focus parent
 set $tag1 "1:  "
 set $tag2 "2:  "
 set $tag3 "3: "
-set $tag4 "4: "
+set $tag4 "4"
 set $tag5 "5"
 set $tag6 "6"
 set $tag7 "7"
@@ -189,6 +189,8 @@ bar {
 }
 
 # Multimedia Keys
+
+# LOCAL VOLUME
 # increase volume
 #bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
@@ -199,6 +201,11 @@ bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
 #bindsym XF86AudioMute exec amixer -q set Master mute
 #bindsym XF86AudioMute exec amixer -D pulse set Master toggle
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+
+# NETWORK STREAM VOLUME 
+bindsym Ctrl+F11 exec pactl set-sink-volume rtp -5%
+bindsym Ctrl+F12 exec pactl set-sink-volume rtp +5%
+
 # pause / play / next / previous
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
@@ -212,8 +219,12 @@ bindsym XF86MonBrightnessUp exec light -A 10
 for_window [class="^Chromium$" title=" - Chromium$"] border none
 new_window 1pixel
 
+# open browser in the first workspace
+assign [class="^Chromium$"] $tag1
+
 # screen lock
-bindsym $mod+Control+l exec sh /home/sergiu/.i3/i3lock.sh
+bindsym $mod+Ctrl+l exec sh /home/sergiu/.i3/i3lock.sh
+bindsym $mod+Ctrl+s exec sh /home/sergiu/.i3/i3suspend.sh
 
 # colors
 # class                 border  backgr. text    indicator
@@ -227,6 +238,7 @@ bindsym Alt+Print exec gnome-screenshot -w -f /home/sergiu/Dropbox/ss/$(date +%Y
 # change keyboard layout
 bindsym $mod+Ctrl+e exec setxkbmap us
 bindsym $mod+Ctrl+r exec setxkbmap ro std
+bindsym $mod+Ctrl+d exec setxkbmap de qwerty
 
 # save a reddit joke to clipboard
 bindsym $mod+j exec /home/sergiu/work/gimmeHumour/gimmeHumour.sh
