@@ -24,12 +24,12 @@
 # or you may use hw:# where # is the number of the card desired
 
 STEP="${1:-5%}"
-SINK=2 #this should be the Avantree Audition headset
+SINK=$(pactl list sinks short | tail -n 1 | cut -c -1) #this should be the Avantree Audition headset
 
 #------------------------------------------------------------------------
 
 volume() {
-  pactl list sinks | grep '^[[:space:]]Volume:' | head -n  $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*%\).*,\1,'
+  pactl list sinks | grep '^[[:space:]]Volume:' | tail -n 1 | sed -e 's,.* \([0-9][0-9]*%\).*,\1,'
 }
 
 isMuted() {
