@@ -57,5 +57,10 @@ esac
 
 #------------------------------------------------------------------------
 
+if [[ $IPADDR = "" ]]
+then
+    IPADDR="NO IP"
+fi
+
 echo "$IPADDR" # full text
 echo "$IPADDR" # short text
