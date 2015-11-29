@@ -223,8 +223,8 @@ new_window 1pixel
 assign [class="^Chromium$"] $tag1
 
 # screen lock
-bindsym $mod+Ctrl+l exec sh /home/sergiu/.i3/i3lock.sh
-bindsym $mod+Ctrl+s exec sh /home/sergiu/.i3/i3suspend.sh
+bindsym $mod+Ctrl+l exec sh lock
+bindsym $mod+Ctrl+s exec sh schlaf
 
 # colors
 # class                 border  backgr. text    indicator

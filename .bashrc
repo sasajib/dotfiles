@@ -112,6 +112,5 @@ fi
 export EDITOR=vim
 export BROWSER=w3m
 alias cmus='cmus --listen 0.0.0.0'
-alias schlaf='sh /home/sergiu/.i3/i3suspend.sh'
 
 function command_not_found_handle { /usr/local/bin/clippy.sh $1 ;}
