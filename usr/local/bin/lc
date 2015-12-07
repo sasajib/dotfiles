@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filetypes=( py rb c cpp java js html m php asm bat go hs rs scala )
+filetypes=( py rb c cpp java js html m php asm bat go hs rs scala sh )
 
 for filetype in "${filetypes[@]}"
 do
