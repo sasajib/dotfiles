@@ -1,0 +1,36 @@
+#!/bin/bash
+
+players=`playerctl -l`
+sink=
+
+for player in $players; do
+    if [ $(echo $player | grep "mps-youtube\|cmus") ]; then
+        playerctl -p $player play-pause
+
+        # the following bit makes makes the transition smoother
+        # than just direct play-pause
+        # note: doesn't work well with mps, so I've commented it out
+        : '
+        state=`playerctl status $player`
+
+
+        if [ "$state" == "Paused" ]; then
+            volctl-avantree 0%
+            playerctl -p $player play-pause
+
+            for i in `seq 5 5 50`; do
+                volctl-avantree $i%
+                sleep 0.05
+            done
+        else
+            for i in `seq 20`; do
+                volctl-avantree -5%
+                sleep 0.05
+            done
+            playerctl -p $player play-pause
+        fi
+        '
+
+        break
+    fi
+done

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+command -v kdeconnect-cli >/dev/null 2>&1 || { echo >&2 "kdeconnect is not installed. Aborting."; exit 1; }
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <message>"
+    exit 1
+fi
+
+device=`kdeconnect-cli -a --id-only 2>/dev/null | head`
+
+if [ "$device" = "" ]; then
+    echo "No paired devices. Will try to search and pair automatically."
+
+    feedback=`kdeconnect-cli -l | tail -n 1`
+    echo "$feedback."
+
+    device=`kdeconnect-cli -l --id-only 2>/dev/null | head`
+    if [ "$device" = "" ]; then
+        echo "Stopping."
+        exit 1
+    fi
+
+    echo "Trying to pair to $device. Please accept on device."
+    kdeconnect-cli -d $device --pair
+fi
+
+kdeconnect-cli -d $device --ping-msg "$*"

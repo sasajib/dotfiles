@@ -1,0 +1,22 @@
+#!/bin/bash
+
+t=`sensors -u 2>/dev/null | grep temp._input | awk -F " " '{s+=$NF} END {printf("%.1f", s/NR)}'`
+
+if [ "$1" == "-u" ]; then
+    echo "$t°" # full text
+    echo "$t°" # short text
+else
+    echo "$t" # full text
+    echo "$t" # short text
+fi
+
+# color
+if [ "`echo "$t < 55" | bc`" == "1" ]; then
+    echo "#00FF00"
+elif [ "`echo "$t < 65" | bc`" == "1" ]; then
+    echo "#FFF600"
+#elif [[ $t -lt 60 ]]; then
+#    echo "#FFAE00"
+else
+    echo "#FF0000"
+fi

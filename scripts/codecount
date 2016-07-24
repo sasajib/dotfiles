@@ -1,0 +1,13 @@
+#!/bin/bash
+
+filetypes=( py rb c cpp h java js html m php asm bat go hs rs scala sh )
+
+for filetype in "${filetypes[@]}"
+do
+    count=$(find -name "*.${filetype}" -exec cat {} \; | wc -l)
+
+    if [ $count -gt 0 ];
+    then
+        echo $count lines of .${filetype} code
+    fi
+done

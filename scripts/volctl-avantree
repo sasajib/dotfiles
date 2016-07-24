@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -ne "1" ]; then
+    echo "Usage: $0 delta"
+    echo "where delta is of the form:"
+    echo -e "\\tabsolute: x%"
+    echo -e "\\tincrease: +x%"
+    echo -e "\\tdecrease: -x%"
+    exit 1
+fi
+
+delta=`echo $1 | grep "^[+-]\?[0-9]\{1,3\}%$"`
+
+if [ ! "$delta" ]; then
+    if [ "$1" = "mute" ]; then
+        pactl set-sink-mute bluez_sink.00_02_5B_00_2B_02 toggle
+    else
+        echo "Invalid delta."
+    fi
+else
+    pactl set-sink-volume bluez_sink.00_02_5B_00_2B_02 $delta
+fi

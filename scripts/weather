@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+import urllib.request
+import json
+from pprint import pprint
+
+emojis = {
+        "clear sky":        u"\u2600",
+        "few clouds":       u"\u2600",
+
+        "scattered clouds": u"\u2601",
+        "broken clouds":    u"\u2601",
+
+        "shower rain":      u"\u2614",
+        "light rain":       u"\u2614",
+        "rain":             u"\u2614",
+
+        "thunderstorm":     u"\u26A1",
+
+        "snow":             u"\u2744",
+        "fog":              u""
+        }
+
+
+
+URL = "http://api.openweathermap.org/data/2.5/weather?id=681290&units=metric&appid=0a2e11e490ae022620a8c52df97aeacc"
+s = json.loads(urllib.request.urlopen(URL).read().decode("utf-8"))
+
+city = s['name']
+temp = s['main']['temp']
+details = s['weather'][0]['description']
+
+# Long text
+# print(u"%s %.0f\u00B0 %s" % (emojis[details], temp, details))
+print(u"%s %.0f\u00B0" % (emojis[details], temp))
+
+# Short text
+print(u"%s %.0f" % (emojis[details], temp))
+
+# Color
+if "rain" in details:
+    print("#58bbc7")
+elif "snow" in details:
+    print("#eee9e9")
+elif temp < 21:
+    print("#F9E3CB")
+elif temp < 26:
+    print("#fcd440")
+else:
+    print("#ff6600")

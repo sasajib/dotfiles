@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# This script toggles only external monitor (specified by $EXT), leaves the default monitor (specified by $IN) on.
+# The default monitor (specified by $IN) should be connected when running the script, which is always true for a laptop.
+
+IN="LVDS1"
+#EXT="HDMI1"
+EXT="VGA1"
+
+if (xrandr | grep "$EXT disconnected"); then
+    xrandr --output $IN --auto --output $EXT --off 
+else
+    xrandr --output $IN --auto --primary --output $EXT --auto --right-of $IN
+fi
+
+sh ~/.fehbg # to reposition the wallpaper
