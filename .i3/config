@@ -13,12 +13,13 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-# font pango: Monospace 8
-font pango: Ubuntu Mono 10
+#font pango: Ubuntu Mono 10
+font pango:Ubuntu Mono, FontAwesome 10
+
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-# font pango:DejaVu Sans Mono 8
+#font pango:DejaVu Sans Mono 8
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -31,6 +32,7 @@ font pango: Ubuntu Mono 10
 floating_modifier $mod
 
 # start a terminal
+#bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec xfce4-terminal
 
 # kill focused window
@@ -44,10 +46,10 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-#bindsym $mod+j focus left
-#bindsym $mod+k focus down
-#bindsym $mod+l focus up
-#bindsym $mod+semicolon focus right
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -115,8 +117,7 @@ bindsym $mod+6 workspace $tag6
 bindsym $mod+7 workspace $tag7
 bindsym $mod+8 workspace $tag8
 bindsym $mod+9 workspace $tag9
-bindsym $mod+0 workspace $tag10
-
+bindsym $mod+0 workspace $tag0
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $tag1
@@ -128,7 +129,7 @@ bindsym $mod+Shift+6 move container to workspace $tag6
 bindsym $mod+Shift+7 move container to workspace $tag7
 bindsym $mod+Shift+8 move container to workspace $tag8
 bindsym $mod+Shift+9 move container to workspace $tag9
-bindsym $mod+Shift+0 move container to workspace $tag10
+bindsym $mod+Shift+0 move container to workspace $tag0
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -145,16 +146,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym j resize shrink width 50 px or 10 ppt
+        bindsym k resize grow height 50 px or 10 ppt
+        bindsym l resize shrink height 50 px or 10 ppt
+        bindsym semicolon resize grow width 50 px or 10 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left resize shrink width 50 px or 10 ppt
+        bindsym Down resize grow height 50 px or 10 ppt
+        bindsym Up resize shrink height 50 px or 10 ppt
+        bindsym Right resize grow width 50 px or 10 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -166,79 +167,50 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        position bottom
-        #status_command i3status
-        # ^this is the default i3status
-
-        # IN CASE I WANT TO USE i3status:
-        # status_command i3status -c ~/.i3/i3status.conf
-
-        # IN CASE I WANT TO USE i3blocks:
+        # status_command i3status
         status_command i3blocks
-
-        colors {
-                background #000000
-                statusline #FCBC05
-                focused_workspace  #222222 #FCBC05 #7E0042
-                active_workspace   #222222 #111111 #7E0042
-                inactive_workspace #222222 #101010 #888888
-                urgent_workspace   #222222 #000000 #ffffff
-        }
-        # ^this is the custom i3status
-
 }
 
-# Multimedia Keys
 
-# LOCAL VOLUME
-# increase volume
-#bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
-bindsym XF86AudioRaiseVolume exec volup
-# decrease volume
-#bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
-bindsym XF86AudioLowerVolume exec voldn
-# mute volume
-#bindsym XF86AudioMute exec amixer -q set Master mute
-#bindsym XF86AudioMute exec amixer -D pulse set Master toggle
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+##############################################################################
+#                           Custom things added here                         #
+##############################################################################
 
-# NETWORK STREAM VOLUME
-bindsym Ctrl+F11 exec voldn-avantree
-bindsym Ctrl+F12 exec volup-avantree
+# Global gap config
+gaps inner 4
+gaps outer 2
+smart_gaps on
+smart_borders on
 
-# pause / play / next / previous
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
 
-# brightness
-bindsym XF86MonBrightnessDown exec light -U 10
-bindsym XF86MonBrightnessUp exec light -A 10
+
+# Workspace specific gap config
+workspace $tag0 gaps inner 0
+workspace $tag0 gaps outer 0
+
+
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+
+bindsym XF86AudioRaiseVolume exec volctl-avantree +5%
+bindsym XF86AudioLowerVolume exec volctl-avantree -5%
+bindsym XF86AudioMute exec volctl-avantree mute
+bindsym XF86AudioPlay exec mediactl # for some reason, key not working
 
 # hide title bar for some programs
 for_window [class="^Chromium$" title=" - Chromium$"] border none
 new_window 1pixel
 
-# open browser in the first workspace
-assign [class="^Chromium$"] $tag1
-
 # screen lock
 bindsym $mod+Ctrl+l exec sh lock
-bindsym $mod+Ctrl+s exec sh schlaf
-
-# colors
-# class                 border  backgr. text    indicator
-client.focused          #000000 #000000 #ffffff #2e9ef4
+bindsym $mod+Ctrl+s exec sh nap
 
 # screenshot
-bindsym Print exec gnome-screenshot -f /home/sergiu/Dropbox/ss/$(date +%Y-%m-%d-%T).png
-bindsym Shift+Print exec gnome-screenshot -a -f /home/sergiu/Dropbox/ss/$(date +%Y-%m-%d-%T).png
-bindsym Alt+Print exec gnome-screenshot -w -f /home/sergiu/Dropbox/ss/$(date +%Y-%m-%d-%T).png
+bindsym Print exec gnome-screenshot -f $HOME/Dropbox/ss/$(date +%Y-%m-%d-%T).png
+bindsym Shift+Print exec gnome-screenshot -a -f $HOME/Dropbox/ss/$(date +%Y-%m-%d-%T).png
+bindsym Alt+Print exec gnome-screenshot -w -f $HOME/Dropbox/ss/$(date +%Y-%m-%d-%T).png
 
 # change keyboard layout
 bindsym $mod+Ctrl+e exec setxkbmap us
 bindsym $mod+Ctrl+r exec setxkbmap ro std
 bindsym $mod+Ctrl+d exec setxkbmap de qwerty
-
-# save a reddit joke to clipboard
-bindsym $mod+j exec /home/sergiu/work/gimmeHumour/gimmeHumour.sh
