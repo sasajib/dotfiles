@@ -16,7 +16,7 @@
 
 #------------------------------------------------------------------------
 
-INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+INTERFACE="${BLOCK_INSTANCE:-wlp8s0}"
 
 #------------------------------------------------------------------------
 
@@ -25,22 +25,8 @@ INTERFACE="${BLOCK_INSTANCE:-wlan0}"
 [[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
     [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]] && exit
 
-#------------------------------------------------------------------------
+SSID=$(iwgetid $INTERFACE -r)
 
-QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-
-#------------------------------------------------------------------------
-
-echo $QUALITY% # full text
-echo $QUALITY% # short text
-
-# color
-if [[ $QUALITY -ge 80 ]]; then
-    echo "#00FF00"
-elif [[ $QUALITY -lt 80 ]]; then
-    echo "#FFF600"
-elif [[ $QUALITY -lt 60 ]]; then
-    echo "#FFAE00"
-elif [[ $QUALITY -lt 40 ]]; then
-    echo "#FF0000"
-fi
+echo $SSID
+echo $SSID
+echo "#00FF00"

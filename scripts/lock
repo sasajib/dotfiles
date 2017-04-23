@@ -1,3 +1,10 @@
 #!/bin/bash
 
-i3lock-fancy -f Ubuntu-Light
+# i3lock-fancy -f Ubuntu-Light -- scrot -z -q 100
+#i3lock -i /home/sergiu/img/fox.png -e -l
+
+# the risk i took was calculated
+# i3lock -i /home/sergiu/img/pj5srvql582y_1366x768.png -e -l
+
+# win95 default blue
+i3lock -i /home/sergiu/img/wallpapers/I4IF27V.png -e -l

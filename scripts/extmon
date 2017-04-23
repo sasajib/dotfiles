@@ -4,8 +4,7 @@
 # The default monitor (specified by $IN) should be connected when running the script, which is always true for a laptop.
 
 IN="LVDS1"
-#EXT="HDMI1"
-EXT="VGA1"
+EXT="HDMI1"
 
 if (xrandr | grep "$EXT disconnected"); then
     xrandr --output $IN --auto --output $EXT --off 
