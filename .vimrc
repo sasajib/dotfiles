@@ -9,6 +9,11 @@ Plug 'mikelue/vim-maven-plugin'
 Plug 'tfnico/vim-gradle'
 Plug 'easymotion/vim-easymotion'
 Plug 'nightsense/seabird' " 4 colorschemes
+Plug 'Valloric/YouCompleteMe'
+Plug 'rust-lang/rust.vim'
+Plug 'leafgarland/typescript-vim' " syntax higlighting
+Plug 'morhetz/gruvbox' " colorscheme
+Plug 'mattn/emmet-vim'
 
 " Initialize plugin system
 call plug#end()
@@ -16,17 +21,20 @@ call plug#end()
 " vim-autoformat
 let g:formatdef_my_custom_cs = '"astyle --mode=cs --style=ansi -pcHs4"'
 let g:formatters_cs = ['my_custom_cs']
+au BufWrite * :Autoformat " autoformat at save
 
 
 " Colors
 " colorscheme deepblue
-colorscheme molokai
+" colorscheme molokai
+colorscheme gruvbox
 " colorscheme aqua
+set background=dark
 
 syntax enable           " enable syntax processing
-set tabstop=4           " number of visual spaces per TAB
-set softtabstop=4       " number of spaces in tab when editing
-set shiftwidth=4
+set tabstop=2           " number of visual spaces per TAB
+set softtabstop=2       " number of spaces in tab when editing
+set shiftwidth=2
 set expandtab           " tabs are spaces
 
 set nu                  " show line numbers
@@ -41,6 +49,10 @@ set ignorecase          " case insensitive search
 set hlsearch            " highlight matches
 " turn off search highlight (backslash + space)
 nnoremap <leader><space> :nohlsearch<CR>
+
+" use the system clipboard for copying and pasting outside vim
+set clipboard=unnamedplus
+
 
 set foldenable
 set foldnestmax=10      " 10 nested fold max
@@ -124,6 +136,7 @@ autocmd FileType cmake setlocal commentstring=#\ %s
 autocmd FileType python setlocal commentstring=#\ %s
 autocmd FileType vim setlocal commentstring=\"\ %s
 autocmd FileType haskell setlocal commentstring=--\ %s
+autocmd FileType html setlocal commentstring=\<b\>\<samp\>%s\<\/samp\>\<\/b\>
 
 " NERDTree fold on ctrl+n
 map <C-n> :NERDTreeToggle<CR>
@@ -133,3 +146,10 @@ nnoremap <F9> :!clear<CR>:make build<CR>
 
 " Stop YCM from asking whether or not to load config file every time
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+
+
+" YCM Rust semantic completion
+" In this example, the rust source code zip has been extracted to
+" /usr/local/rust/rustc-1.17.0
+let g:ycm_rust_src_path = '/usr/local/rust/rustc-1.17.0/src'
