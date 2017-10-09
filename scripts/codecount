@@ -1,13 +1,30 @@
 #!/bin/bash
 
-filetypes=( py rb c cpp h java js html m php asm bat go hs rs scala sh )
+filetypes=( py rb c cc cpp h java js html m php asm bat go hs rs ui scala sh )
+prefixes=( BUILD WORKSPACE )
+total=0
 
 for filetype in "${filetypes[@]}"
 do
-    count=$(find -name "*.${filetype}" -exec cat {} \; | wc -l)
+  count=$(find -type f -name "*.${filetype}" -exec cat {} \; | wc -l)
 
-    if [ $count -gt 0 ];
-    then
-        echo $count lines of .${filetype} code
-    fi
+  if [ ${count} -gt 0 ];
+  then
+    echo ${count} lines of .${filetype} code
+    total=$(echo ${total} + ${count} | bc)
+  fi
 done
+
+for prefix in "${prefixes[@]}"
+do
+  count=$(find -type f -name "${prefix}*" -exec cat {} \; | wc -l)
+
+  if [ ${count} -gt 0 ];
+  then
+    echo ${count} lines of ${prefix} code
+    total=$(echo ${total} + ${count} | bc)
+  fi
+done
+
+echo "---"
+echo "${total} total"
