@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Runs an xscreensaver screensaver (penrose) as a wallpaper.
+
+xwinwrap -b -fs -sp -fs -nf -ov  -- /usr/lib/xscreensaver/penrose -root -window-id WID &

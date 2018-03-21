@@ -1,6 +1,8 @@
 #!/bin/bash
 
-filetypes=( py rb c cc cpp h java js html m php asm bat go hs rs ui scala sh )
+# Counts lines of code recursively in the current directory, categorized by file extension
+
+filetypes=( py rb c cc cpp h hpp java js html m php asm bat go hs rs ui scala sh )
 prefixes=( BUILD WORKSPACE )
 total=0
 

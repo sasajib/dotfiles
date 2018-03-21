@@ -1,0 +1,9 @@
+#!/bin/bash
+
+filename="$HOME/Pictures/$(date +"%Y-%m-%d-%H-%M-%S").png"
+
+scrot -q 75 -s "${filename}"
+
+echo "Saved screenshot to ${filename}"
+
+xclip -selection clipboard -t image/png -i "${filename}"

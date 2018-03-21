@@ -13,10 +13,6 @@ prompt='$'
 [[ $(whoami) == 'root' ]] && prompt='#'
 PS1='\[\033[32m\][\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;32m\]@\h\[\033[1;33m\] $prompt \[\033[0m\]'
 
-# Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-  . /usr/share/bash-completion/bash_completion
-
 # auto-cd with just a path name
 shopt -s autocd
 
@@ -28,14 +24,19 @@ export EDITOR='vim'
 export BROWSER='w3m'
 export GOPATH=~/work/go
 export PATH=$PATH:~/work/go/bin
+export QT_SCALE_FACTOR=2
+export ANDROID_HOME='/home/sergiu/Android/Sdk'
+export ANDROID_AVD_ROOT='/home/sergiu/Android/Sdk'
+export ANDROID_SDK_ROOT='/home/sergiu/Android/Sdk'
+export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 
 source /etc/profile.d/autojump.bash
 
 # Powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
+# powerline-daemon -q
+# POWERLINE_BASH_CONTINUATION=1
+# POWERLINE_BASH_SELECT=1
+# . /usr/lib/python3.6/site-packages/powerline/bindings/bash/powerline.sh
 
 function up {
   for _ in $(seq 1 $1); do
@@ -54,3 +55,19 @@ function search {
   find . -iname "*$1*"
 }
 
+function tmx {
+  name=$1
+  if tmux list-sessions | grep -q "^${name}:"; then
+    tmux attach -t "${name}"
+  else
+    tmux new-session -s "${name}"
+  fi
+}
+
+function download {
+  wget -r -np -R "index.html*" $1
+}
+
+# source /usr/share/nvm/init-nvm.sh
+
+task ls

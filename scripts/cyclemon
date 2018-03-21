@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Uses extmon and noextmon in order to cycle between two modes:
+# 1. Integrated monitor only.
+# 2. External displays only (one portrait, one landscape).
+
+laptop_display_connected=$(mons | grep -c "eDP1.\+(enabled)")
+
+if [[ ${laptop_display_connected} = "1" ]]; then
+  echo "Laptop screen active. Switching to external displays."
+  extmon
+else
+  echo "External displays active. Switching to laptop screen."
+  noextmon

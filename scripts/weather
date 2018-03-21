@@ -4,23 +4,18 @@ import json
 from pprint import pprint
 
 emojis = {
-        "clear sky":        u"\u2600",
-        "few clouds":       u"\u2600",
-
-        "scattered clouds": u"\u2601",
-        "broken clouds":    u"\u2601",
-
-        "shower rain":      u"\u2614",
-        "light rain":       u"\u2614",
-        "rain":             u"\u2614",
-
-        "thunderstorm":     u"\u26A1",
-
-        "snow":             u"\u2744",
-        "fog":              u""
-        }
-
-
+    "clear sky": u"\u2600",
+    "few clouds": u"\u2600",
+    "scattered clouds": u"\u2601",
+    "broken clouds": u"\u2601",
+    "shower rain": u"\u2614",
+    "light rain": u"\u2614",
+    "rain": u"\u2614",
+    "thunderstorm": u"\u26A1",
+    "light snow": u"\u2744",
+    "snow": u"\u2744",
+    "fog": u""
+}
 
 URL = "http://api.openweathermap.org/data/2.5/weather?id=681290&units=metric&appid=0a2e11e490ae022620a8c52df97aeacc"
 s = json.loads(urllib.request.urlopen(URL).read().decode("utf-8"))

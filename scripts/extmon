@@ -1,11 +1,24 @@
 #!/bin/bash
-scale="1.75x1.75"
 
-xrandr --output VIRTUAL1 --off \
-       --output HDMI1 --off \
-       --output eDP1 --off \
-       --output DP2 --off \
-       --output DP1-1 --off \
-       --output DP1-2 --off \
-       --output DP1 --mode 1920x1080 --pos 0x0 --rotate left --scale ${scale} \
-       --output DP2-3 --mode 1920x1080 --pos 1890x1160 --rotate normal --scale ${scale}
+# Deactivates integrated display and activates 2 external displays
+
+readarray -t external_displays <<< "$(xrandr | grep ".\+\sconnected" | cut -d " " -f 1 | grep -v "eDP" | shuf)"
+
+scale="1.5"
+display_count=${#external_displays[@]}
+
+for index in "${display_count}"
+do
+    echo "$index ${external_displays[index]}"
+done
+
+if [[ ${display_count} = 2 ]]; then
+  xrandr --output VIRTUAL1 --off \
+         --output HDMI1 --off \
+         --output eDP1 --off \
+         --output DP2 --off \
+         --output DP1-1 --off \
+         --output DP1-2 --off \
+         --output ${external_displays[0]} --mode 1920x1080 --pos 0x0 --rotate left --scale "${scale}x${scale}" \
+         --output ${external_displays[1]} --mode 1920x1080 --pos 1620x272 --rotate normal --scale "${scale}x${scale}"
+fi
