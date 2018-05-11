@@ -1,0 +1,19 @@
+#!/bin/bash
+# Choose a random audio sink (not the default one), set it as default and move all audio streams to it.
+
+default_sink_name=$(pactl info | grep "Default Sink" | cut -d " " -f 3)
+default_sink=$(pactl list sinks short | grep ${default_sink_name} | grep -o "^[0-9]\+")
+random_sink=$(pactl list sinks short | grep -o "^[0-9]\+" | grep -v ${default_sink} | shuf | head -n 1)
+
+echo "Default sink: ${default_sink}"
+if [[ -z ${random_sink} ]]; then
+  echo "No other sink available"
+else
+  echo "Randomly chosen sink: ${random_sink}"
+
+  pactl set-default-sink ${random_sink}
+  for stream in $(pacmd list-sink-inputs | grep index | grep -o "[0-9]\+"); do
+    echo "Stream: ${stream}"
+    pacmd move-sink-input ${stream} ${random_sink}
+  done
+fi
