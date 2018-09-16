@@ -7,11 +7,22 @@
 
 source ~/.bash_aliases
 
+HISTSIZE=2000
+
 # PS1='[\u@\h \W]\$ '
 
 prompt='$'
 [[ $(whoami) == 'root' ]] && prompt='#'
-PS1='\[\033[32m\][\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;32m\]@\h\[\033[1;33m\] $prompt \[\033[0m\]'
+
+git_branch() {
+  branch=$(git branch 2>/dev/null | grep '^*' | colrm 1 2)
+  if [[ ! -z $branch ]]; then
+    branch=" (${branch})"
+  fi
+  echo "$branch"
+}
+
+PS1="\[\033[32m\][\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;32m\]@\h\[\033[1;33m\]\$(git_branch)$prompt \[\033[0m\]"
 
 # auto-cd with just a path name
 shopt -s autocd
@@ -70,4 +81,9 @@ function download {
 
 # source /usr/share/nvm/init-nvm.sh
 
-task ls
+[[ -z "$TMUX" ]] && tmux
+
+# task ls
+
+# added by travis gem
+[ -f /home/sergiu/.travis/travis.sh ] && source /home/sergiu/.travis/travis.sh

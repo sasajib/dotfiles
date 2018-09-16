@@ -21,6 +21,8 @@ local volume_control = require("volume-control")
 -- define your volume control, using default settings:
 volumecfg = volume_control({})
 
+local cyclefocus = require('cyclefocus')
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -125,7 +127,8 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+romania_textclock = wibox.widget.textclock()
+mtv_textclock = wibox.widget.textclock("(%H:%M MTV)", 60, "-7")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -178,7 +181,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        gears.wallpaper.fit(wallpaper, s, "#000000")
     end
 end
 
@@ -225,7 +228,9 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
-            mytextclock,
+            require("battery-widget") {},
+            romania_textclock,
+            mtv_textclock,
             volumecfg.widget,
             s.mylayoutbox,
         },
@@ -352,9 +357,19 @@ globalkeys = gears.table.join(
     awful.key({}, "XF86AudioPrev",         function() awful.spawn("playerctl previous") end),
     awful.key({}, "XF86AudioNext",         function() awful.spawn("playerctl next") end),
     awful.key({}, "XF86AudioPlay",         function() awful.spawn("playerctl play-pause") end),
-    awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("xbacklight -dec 10") end),
-    awful.key({}, "XF86MonBrightnessUp",   function() awful.spawn("xbacklight -inc 10") end),
-    awful.key({}, "XF86Display",           function() awful.spawn("cyclemon") end)
+    awful.key({}, "XF86MonBrightnessDown", function() awful.spawn("brightness -") end),
+    awful.key({}, "XF86MonBrightnessUp",   function() awful.spawn("brightness +") end),
+    awful.key({}, "XF86Display",           function() awful.spawn("cyclemon") end),
+    awful.key({}, "XF86Tools",             function() awful.spawn("switch_sink") end),
+    awful.key({}, "XF86LaunchA",           function() awful.spawn("extmon") end),
+    awful.key({}, "XF86LaunchB",           function() awful.spawn("switch_sink") end),
+    awful.key({}, "XF86HomePage",          function() awful.spawn("chromium") end),
+    awful.key({}, "Print",                 function() awful.spawn("ss") end),
+
+  -- modkey+Tab: cycle through all clients.
+  awful.key({ modkey }, "Tab",             function(c) cyclefocus.cycle({modifier="Super_L"}) end),
+  -- modkey+Shift+Tab: backwards
+  awful.key({ modkey, "Shift" }, "Tab",    function(c) cyclefocus.cycle({modifier="Super_L"}) end)
 )
 
 clientkeys = gears.table.join(
@@ -453,6 +468,7 @@ end
 
 clientbuttons = gears.table.join(
     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+    awful.button({ modkey }, 2, function (c) c:kill() end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
@@ -504,7 +520,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
+      }, properties = { titlebars_enabled = false }
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
@@ -585,6 +601,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Startup applications
 runonce.run("nm-applet")
 runonce.run("blueman-applet")
-runonce.run("/usr/bin/compton --config /home/sergiu/.config/compton.conf")
+runonce.run("/usr/bin/compton --unredir-if-possible --config /home/sergiu/.config/compton.conf")
 runonce.run("xscreensaver -nosplash")
-runonce.run("redshift-gtk")
+runonce.run("redshift -l 46:23 -t 6000:3000")
+runonce.run("mons -a")
+

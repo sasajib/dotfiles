@@ -1,25 +1,28 @@
 " vim-plug configuration
 call plug#begin('~/.vim/plugged')                           " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 
+" Plug 'racer-rust/vim-racer'                                 " mostly included in YCM
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe'
 Plug 'altercation/vim-colors-solarized'
 Plug 'artur-shaik/vim-javacomplete2'                        " java autocomplete
 Plug 'bazelbuild/vim-bazel'                                 " :Bazel
 Plug 'cespare/vim-toml'                                     " toml syntax
+Plug 'chrisbra/csv.vim'
 Plug 'danro/rename.vim'                                     " :Rename new_name
 Plug 'easymotion/vim-easymotion'
 Plug 'flazz/vim-colorschemes'                               " colorscheme pack
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-haskell-indent', { 'for': 'haskell' }
+Plug 'junegunn/goyo.vim'                                    " distraction free writing
 Plug 'jvirtanen/vim-octave'                                 " octave/matlab syntax
 Plug 'kien/ctrlp.vim'                                       " file browsing (Ctrl+P)
+Plug 'lervag/vimtex'                                        " LaTeX support
 Plug 'mattn/emmet-vim'                                      " html
 Plug 'mikelue/vim-maven-plugin'
 Plug 'morhetz/gruvbox'                                      " colorscheme
 Plug 'nightsense/seabird'                                   " 4 colorschemes
 Plug 'ntpeters/vim-better-whitespace'                       " :StripWhitespace
-Plug 'racer-rust/vim-racer'                                 " mostly included in YCM
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'                                  " Ctrl+N for left-pane file explorer
@@ -28,7 +31,12 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-commentary'                                 " gcc (or gc in visual) comments code
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'udalov/kotlin-vim'
+Plug 'vim-scripts/DrawIt'
 Plug 'vim-syntastic/syntastic'                              " syntactic check
+Plug 'xolox/vim-lua-ftplugin'                               " lua file type plugin
+Plug 'xolox/vim-misc'                                       " required by vim-lua-ftplugin
+Plug 'stevearc/vim-arduino'
 
 Plug 'google/vim-maktaba'                                   " Add maktaba and codefmt to the runtimepath.
 Plug 'google/vim-codefmt'                                   " (codefmt must be installed before it can be used.)
@@ -44,15 +52,15 @@ Glaive codefmt google_java_executable="java -jar /usr/share/java/google-java-for
 " google/vim-codefmt configs; make sure the formatters are installed
 Glaive codefmt clang_format_style='Google'
 augroup autoformat_settings
-  autocmd FileType bzl           AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto   AutoFormatBuffer clang-format
-  autocmd FileType dart          AutoFormatBuffer dartfmt
-  autocmd FileType gn            AutoFormatBuffer gn
-  autocmd FileType go            AutoFormatBuffer gofmt
-  autocmd FileType html,css,json AutoFormatBuffer js-beautify
-  autocmd FileType java          AutoFormatBuffer google-java-format
-  autocmd FileType python        AutoFormatBuffer yapf      " alternative: autopep8
-  autocmd FileType rust          AutoFormatBuffer rustfmt
+  autocmd FileType rust                 AutoFormatBuffer rustfmt
+  autocmd FileType bzl                  AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,arduino  AutoFormatBuffer clang-format
+  autocmd FileType dart                 AutoFormatBuffer dartfmt
+  autocmd FileType gn                   AutoFormatBuffer gn
+  autocmd FileType go                   AutoFormatBuffer gofmt
+  autocmd FileType html,css,json        AutoFormatBuffer js-beautify
+  autocmd FileType java                 AutoFormatBuffer google-java-format
+  autocmd FileType python               AutoFormatBuffer yapf
 augroup END
 
 let g:lightline = { 'colorscheme': 'seoul256' }
@@ -61,6 +69,9 @@ let g:ycm_show_diagnostics_ui = 0
 
 set laststatus=2      " Always show statusline
 set t_Co=256          " Use 256 colours (Use this setting only if your terminal supports 256 colours)
+
+let g:tex_flavor='latex'
+let g:vimtex_view_general_viewer='zathura'
 
 " vim-autoformat configuration
 let g:formatdef_google_style_cpp = '"clang-format --style=Google"'
@@ -72,9 +83,9 @@ let g:autoformat_verbosemode = 1
 " autocmd BufWritePre * StripWhitespace
 
 " Colors
-colorscheme deepsea
+" colorscheme deepsea
 " colorscheme molokai
-" colorscheme gruvbox
+colorscheme gruvbox
 set background=dark
 
 syntax enable           " enable syntax processing
@@ -156,7 +167,7 @@ nnoremap <Leader>bt :Bazel test ...:all<CR>
 " <F9> runs :make build
 nnoremap <F9> :!clear<CR>:make build<CR>
 
-nnoremap <Leader>f :FormatCode<CR>
+nnoremap <Leader>f :RustFmt<CR>
 nnoremap <Leader>s :SyntasticCheck<CR>
 
 noremap <F4> :YcmCompleter FixIt<CR>
@@ -225,13 +236,13 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_global_ycm_extra_conf = '/home/sergiu/.vim/plugged/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
 
 " Racer
-set hidden
-let g:racer_cmd = "/home/sergiu/.cargo/bin/racer" " activate with C-x-C-o when in insert mode
-let g:racer_experimental_completer = 1
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
+" set hidden
+" let g:racer_cmd = "/home/sergiu/.cargo/bin/racer" " activate with C-x-C-o when in insert mode
+" let g:racer_experimental_completer = 1
+" au FileType rust nmap gd <Plug>(rust-def)
+" au FileType rust nmap gs <Plug>(rust-def-split)
+" au FileType rust nmap gx <Plug>(rust-def-vertical)
+" au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 
 " Sets how many lines of history VIM has to remember
@@ -242,7 +253,7 @@ nmap <leader>w :w!<cr>
 
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
-command! W w !sudo tee % > /dev/null
+command! W w
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
@@ -281,3 +292,19 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+" Arduino plugin
+let g:arduino_dir = '/usr/share/arduino'
+let g:arduino_serial_cmd = 'picocom {port} -b {baud} -l'
+let g:arduino_auto_baud = 1
+let g:arduino_serial_tmux = 'split-window -d'
+nnoremap <buffer> <leader>av :ArduinoVerify<CR>
+nnoremap <buffer> <leader>au :ArduinoUpload<CR>
+nnoremap <buffer> <leader>ad :ArduinoUploadAndSerial<CR>
+nnoremap <buffer> <leader>ab :ArduinoChooseBoard<CR>
+nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
+
+function! MyStatusLine()
+  return '%f [' . g:arduino_board . ']'
+endfunction
+setl statusline=%!MyStatusLine()

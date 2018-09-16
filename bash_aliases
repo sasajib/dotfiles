@@ -4,7 +4,9 @@ alias ..='cd ..'
 alias cmus='cmus --listen 0.0.0.0:3000'
 
 # alias ls='ls --color=auto'
-alias ls='exa -l'
+alias ls='exa -l --group-directories-first'
+# alias ll='ls -la'
+# alias l='ls'
 alias pacman='pacman --color=auto'
 alias diff='diff --color=auto'
 alias grep='grep --color=auto'
@@ -23,8 +25,9 @@ alias androidebug='adb logcat *:E BOBS:V'
 alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
 
 alias spotify='spotify --force-device-scale-factor=1.5'
+alias chrome="google-chrome-stable --force-device-scale-factor=1.8"
 
-alias cm='QT_SCALE_FACTOR=1 streamlink -p vlc twitch.tv/creativemonkeyz 720p60'
+alias cm='QT_SCALE_FACTOR=1 streamlink -p mpv twitch.tv/creativemonkeyz $1'
 
 # alias drive='gdfs -o allow_other -o big_writes /home/sergiu/.gdfs/creds /mnt/drive/'
 

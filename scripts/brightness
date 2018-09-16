@@ -25,18 +25,18 @@ one_percent=$(echo "${max_brightness}/100" | bc)
 new_brightness=$(echo "${current_brightness}${op}${step}*${one_percent}" | bc)
 
 
-new_brightness=$(echo "define max(a, b) { 
+new_brightness=$(echo "define max(a, b) {
 	if (a > b) {
 		return (a);
-	} 
+	}
 	return (b);
 }
-max(${new_brightness}, 100)" | bc)
+max(${new_brightness}, 1)" | bc)
 
-new_brightness=$(echo "define min(a, b) { 
+new_brightness=$(echo "define min(a, b) {
 	if (a < b) {
 		return (a);
-	} 
+	}
 	return (b);
 }
 min(${new_brightness}, ${max_brightness})" | bc)
